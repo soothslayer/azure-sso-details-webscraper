@@ -1,0 +1,221 @@
+id,appId,displayName,servicePrincipalType,accountEnabled,csa_set,csa_attr
+52bf248a-6e9d-41c7-b1e4-24b6e0d18716,fa67c2e6-1aa0-4f20-a0cd-50841224b621,obp-mgmnt-lite-rhbk-aad,Application,TRUE,SSO,UniqueUserIdentifier
+1e2ba752-4adb-4963-93cb-b7a61c8fca33,fef51974-2066-4787-ab30-4cfcc63d0aa4,GTIS2-Perf,Application,TRUE,SSO,UniqueUserIdentifier
+fee289bd-1053-49e1-8df0-af1dfb360415,5d8f1a84-354b-48a0-87d6-ffc12c215612,Orgvue Prod,Application,TRUE,SSO,UniqueUserIdentifier
+0702413b-7919-4803-a12a-54645897adb8,438885b4-ad11-478e-8584-033e959670c1,DSM Test Server Internal,Application,TRUE,SSO,UniqueUserIdentifier
+63396416-c0bd-44d3-a1f2-ce9ce40b2a2c,66b7f7c9-79c3-4847-9f25-4ce92ba2c180,DSM Test Server External,Application,TRUE,SSO,UniqueUserIdentifier
+2568daf3-948d-46cd-b62b-4935dc1d85c8,9ed094da-7edb-4b97-a7e8-fc732f626cdd,MDSWebQA,Application,TRUE,SSO,UniqueUserIdentifier
+1a960187-c70b-4b4c-99bb-95bb929c453f,f89776db-cfee-4835-b18a-fda53650ec49,EPOQA,Application,TRUE,SSO,UniqueUserIdentifier
+589cf9da-1d40-4590-887a-a21e44336483,42fc56f7-93da-45d5-b0ec-83734ed013cf,GINIUS Salesforce Smoke2,Application,TRUE,SSO,UniqueUserIdentifier
+5056f429-66c3-46a0-8730-4af7771d4db0,c78431bb-e073-414f-a20c-b706201ae5fe,globalAPIMInvPorNonprodClient,Application,TRUE,SSO,UniqueUserIdentifier
+2c8d043f-1f35-49fe-98cd-fda48873c71b,234a2f70-38f9-4d27-a115-e3b1a26eb294,GrafanaVDI,Application,TRUE,SSO,UniqueUserIdentifier
+5c3abbf8-b15b-4b50-88ab-308de4a01eb5,2caff6c6-532d-45cf-8557-28645d27b018,ELF-Explorer_UAT,Application,TRUE,SSO,UniqueUserIdentifier
+17c5b1e9-3018-4a76-b2fc-5d50ce54e886,4b59e5d6-613c-4bea-95d5-4ff6776d6cde,INACTIVE - Matillion Production (Node 2),Application,FALSE,SSO,UniqueUserIdentifier
+24cc8380-e3b7-4685-8cfe-a22de47f3144,743b9b93-aa0a-4c64-90c0-bde237bd7f5b,NGET-Simple-Data-Product-Catalogue-Service-Test-SSO,Application,TRUE,SSO,UniqueUserIdentifier
+667d2646-4a3a-4a46-85a7-d10b1157cdea,c18f5b6e-fd3d-4f9b-89cb-515205a7b06e,NGET-Simple-Data-Product-Catalogue-Test-SSO,Application,TRUE,SSO,UniqueUserIdentifier
+049cc557-0aba-44ad-a3b2-0316957a55e3,9aaf47f6-f4a1-4318-9ea4-d151682ea44c,DeviceTrackerUAT,Application,TRUE,SSO,UniqueUserIdentifier
+5895cb35-3a4e-4dbc-8331-3b0002b43bfb,04537e4f-50bc-425d-88ba-61c5bbd8d770,EPOWebProd,Application,TRUE,SSO,UniqueUserIdentifier
+4ffd3efe-a6ed-4205-b325-6366b9f94e62,765ba626-38ac-4a76-bf75-9d1bd4a5fde0,MDSWebProd,Application,TRUE,SSO,UniqueUserIdentifier
+7b8b62b2-6119-403f-91e1-00fc6e5a97ad,24e21841-bdc2-496a-8389-903606f6a8c2,NGET-Simple-Data-Product-Catalogue-SSO,Application,TRUE,SSO,UniqueUserIdentifier
+7463c850-d396-4914-b266-46d0b4e0334d,cfacdcd0-92d0-422a-9621-d894b3cd2de9,INACTIVE-NGET-Digital-Data-Portfolio-Dev-SSO,Application,FALSE,SSO,UniqueUserIdentifier
+1c443e87-3e49-481a-a9c3-d40209113e9a,a4ad3ab7-00a3-4de4-a024-8ea2f74157cd,OT8_Fiori_QAS2,Application,TRUE,SSO,UniqueUserIdentifier
+324fa686-b297-42f1-9daa-57f513f9e39b,a89408a6-20f4-4f18-b234-72adb87f01d6,sanplogic-ipaas-dev-sso,Application,TRUE,SSO,UniqueUserIdentifier
+73c88f9a-44dd-43c3-bee7-c8a10206093d,8f7772f4-a1c9-4fc5-a127-1df3abfd8d1c,SharePoint IRM Graph UAT,Application,TRUE,SSO,UniqueUserIdentifier
+60317cc3-779c-4c32-9261-6524ddcd0163,c1ac7ea0-4e7b-4568-94a2-50711d1506f1,OG8_GRC_QAS2,Application,TRUE,SSO,UniqueUserIdentifier
+08aa2747-3724-490f-9a3d-88c497522970,bc128d25-9b12-4140-91ba-350696f7eacc,Anaconda SSO,Application,TRUE,SSO,UniqueUserIdentifier
+6fc92a52-2ae3-42f1-b822-a992d9231b61,e06de820-adcb-40a7-92a8-3dad907852db,UK-5784C-nonprd-03-automation-openapi,Application,TRUE,SSO,UniqueUserIdentifier
+51e0a5ca-e91c-441d-98df-fe2cbace4d4e,4c41ed7b-b113-4791-bbd5-d41aa6d241a2,Apptio (New Instance),Application,TRUE,SSO,UniqueUserIdentifier
+5a1eabf5-4331-4222-b1c9-212953a638eb,43d197dc-6697-4157-9607-60c9c85442a2,JIRA Cloud DEV,Application,TRUE,SSO,UniqueUserIdentifier
+59a3b6b4-24cd-4e24-94c7-d80a3aaf99e6,1b844e5b-726e-4f02-a547-ec22e4e63e22,RTCWindowsOAuthApiProd,Application,TRUE,SSO,UniqueUserIdentifier
+44a563f4-6b3a-42b7-9cb1-9dfa6397d9da,eb1a06d9-42f3-4f2d-9edb-3f962d3b0728,Rev-Trac-UK QA,Application,TRUE,SSO,UniqueUserIdentifier
+7079891c-f35b-40df-bdaf-6fc99a392356,073680cf-4051-4a8f-a6c9-0318771c3269,GAPI-APIM-UK-PROD SSO,Application,TRUE,SSO,UniqueUserIdentifier
+084b7748-bddb-4481-b0f4-13621f2aafcf,7fb6d0e5-0e90-4850-8d8b-063a5ae9164b,RCC_MAPS_DEV,Application,TRUE,SSO,UniqueUserIdentifier
+fea21e68-c7b8-4ced-b4eb-27ae3094323d,44111565-a4f0-4a44-8278-dcc078706d3d,US-GG-APP-RMD_openid,Application,TRUE,SSO,UniqueUserIdentifier
+03083301-ae7f-4070-aa81-ce281bb9ed51,70409aa6-594c-4023-904f-2b3ce00d8191,INACTIVE - Equate Plus,Application,FALSE,SSO,UniqueUserIdentifier
+4c0312bb-13e8-43ee-89c7-e5806d7a5b80,dfda8239-83cb-4057-8b60-ef9cbc98f5aa,RCC_MAPS_UAT_SSO,Application,TRUE,SSO,UniqueUserIdentifier
+fb96019d-a14c-474d-938c-0cb8da98a9d3,5961cf21-cff8-474c-97b2-b672562216d4,DSS Govt Prod,Application,TRUE,SSO,UniqueUserIdentifier
+2d90008b-804e-4513-9b56-8ae777901602,1e5c944c-0894-4ab0-aef8-392f260e4f91,aae-fof-uks-aaeddtd-app-01,Application,TRUE,SSO,UniqueUserIdentifier
+e17723e8-6c57-430a-b24b-4845abdc57fa,e3432d2b-7169-4988-9342-4d0eebc24eca,DSM New Test Server External HTTP,Application,TRUE,SSO,UniqueUserIdentifier
+0343ea17-b8c1-49c7-b717-23bb4d132e5e,71d55d68-4d9a-4782-a82f-deb8e534e78b,Equate Plus UAT_SSO,Application,TRUE,SSO,UniqueUserIdentifier
+2a958bc6-6d2b-490c-a3cf-307af36ddadd,000283aa-2522-4457-ae12-74df65be8d61,Matillion-PROD-Node-PR01,Application,TRUE,SSO,UniqueUserIdentifier
+46eb67da-925b-4ca0-9c92-032b3ef70108,3a34db09-dffd-406c-a906-6c7653c0577e,QR8_ECC_QAS,Application,TRUE,SSO,UniqueUserIdentifier
+60829f75-54ba-4af4-9396-11a4d29fe4a0,e50dd7ad-01d0-412f-a353-21ec31e6a1b9,QG8_GRC_QAS,Application,TRUE,SSO,UniqueUserIdentifier
+5da039e0-8f12-4b11-8120-ed13fce9f282,f72b923b-4690-4ef2-82d1-268a9a1aa299,aae-fof-uks-aaesset-app-01-app,Application,TRUE,SSO,UniqueUserIdentifier
+64fd653b-6788-4eaa-a372-d133ec3bb8d3,4aeca2e3-4fa3-42d1-a02d-31491b48326a,DSM New PROD-UAT Server External,Application,TRUE,SSO,UniqueUserIdentifier
+5a9fefd6-a0d3-4bee-9d84-354421b3d097,c917ee99-6704-46fa-ab15-e94f918ac2bd,ExterroCollector,Application,TRUE,SSO,UniqueUserIdentifier
+084234f3-8742-491a-8446-521ae5bcd025,521fea71-5e88-452a-94eb-3c78c6a46da9,IAM-SSO-Team-Automation-Delegated,Application,TRUE,SSO,UniqueUserIdentifier
+e0896b68-0c97-483a-8482-b063d773d193,a880957c-6ce2-474b-a733-b4b114738aa8,DSM New TEMP NS11 PROD Server Internal,Application,TRUE,SSO,UniqueUserIdentifier
+70eb704c-f0b0-4765-870b-3d06568d5bcc,21281814-91de-44e8-9054-4cfee3c892a0,VM Asset Map - Dev_SSO,Application,TRUE,SSO,UniqueUserIdentifier
+5a2628e1-f44b-484b-8ee3-cd4459111bd9,0edf1552-449a-4f05-9e39-0e6e739ec0d9,DigiCert CertCentral US SSO,Application,TRUE,SSO,UniqueUserIdentifier
+1f1a9a86-149a-4231-9236-c353bd59be39,b75067df-5774-4680-b6e3-f9aa8790e800,DigiCert CertCentral UK SSO,Application,TRUE,SSO,UniqueUserIdentifier
+7c82819e-d26b-42fb-9ac8-0461e75ee03a,ad003e28-9671-4b47-9c7e-0abcfe798540,STLF-DEV SSO,Application,TRUE,SSO,UniqueUserIdentifier
+ae5f29d2-6185-4cd1-8798-46e2c355d050,7ff3bf7c-7837-4ab7-9f10-fa8b1a089bde,Tenable Vulcan Cyber_SSO,Application,TRUE,SSO,UniqueUserIdentifier
+f8dc63a5-1fcb-4fde-b6c3-41b4c660c37b,ca126a8d-7916-4638-b9c4-3690c43ae4c6,snaplogic-ipaas-NonProd SSO,Application,TRUE,SSO,UniqueUserIdentifier
+ad9284c5-fc42-43f7-9eb3-3712180774f1,859dff89-9463-4edf-bcbe-bd1064e85e8e,aae-fof-uks-aaencbc-app-01_SSO,Application,TRUE,SSO,UniqueUserIdentifier
+3cbda58b-fa31-44c5-996c-998309196545,a7ed1b7d-bd7f-48e9-b57d-609b2884536f,BTP_IS Email Connector,Application,TRUE,SSO,UniqueUserIdentifier
+aac4e157-84c5-41e0-ad6d-6a69eed3d6b2,5db0abe7-9345-4b4e-b7cd-e8a0128f8b41,NESO PODE Salesforce Sandboxes_SSO,Application,TRUE,SSO,UniqueUserIdentifier
+1bb3d764-93a1-4e2d-a5fe-66327c5440f3,fda45baf-cc0f-4953-a8fe-e321755335ab,OASQA1 SSO,Application,TRUE,SSO,UniqueUserIdentifier
+d535fdbd-6f51-4960-b6f2-d81e8892341c,e054575e-a747-4586-a3ce-d4bd5bd6d764,Comet Sandbox SSO,Application,TRUE,SSO,UniqueUserIdentifier
+d774c06d-e3c0-4393-a92c-50c65fa36c51,5cf9ba52-387d-4251-bfdc-6b916d2aaecd,EnergyHub Mercury,Application,TRUE,SSO,UniqueUserIdentifier
+2f852620-79b9-4f82-a58b-45fad1b5ee5f,12b6a8d8-a286-4247-8444-1d340c52ca53,OASQA2 SSO,Application,TRUE,SSO,UniqueUserIdentifier
+b12fa11a-7db1-4dba-a24d-7bd37a33f041,ddd220c6-6b60-49fb-b3e6-5d37e083f616,AZ_APP_NGET_PORTFOLIO_SPA_DEV_SSO,Application,TRUE,SSO,UniqueUserIdentifier
+73ae99a1-b7f9-4a19-8720-7b8ff8dd4ab3,9a6a014e-1926-4061-9479-a8003db3488f,ConnectAI Engine- Sandbox App,Application,TRUE,SSO,UniqueUserIdentifier
+4d66e442-b8cc-4c51-9f5f-b651c564c8e4,207a4295-aa26-4d5d-af65-500cac25935f,Maximo Application Suite,Application,TRUE,SSO,UniqueUserIdentifier
+a0d53b5c-7028-4ad5-bba9-1be1110a75ae,b4f68645-35cd-409f-a5e7-8beb0d82ba80,AZ_APP_NGET_PORTFOLIO_API_FOF_SSO,Application,TRUE,SSO,UniqueUserIdentifier
+fcaf5d3c-0d18-44fd-afec-b791a2fcdd48,2ebfe85a-3d0e-4f30-9e8c-24c3ab0d4f9a,AZ_APP_NGET_PORTFOLIO_SPA_FOF_SSO,Application,TRUE,SSO,UniqueUserIdentifier
+6c194ad6-14fe-47b8-b7d5-cb8161832d0c,16a0161d-272e-4b08-9979-488630329b36,aae-fof-uks-aaeivtg-app-01_SSO,Application,TRUE,SSO,UniqueUserIdentifier
+c33d2c77-5934-4275-9f82-93b929716097,6ebb3ccd-25a7-432c-8361-3c3a5670b659,Equate Plus Prod_Admin_SSO,Application,TRUE,SSO,UniqueUserIdentifier
+c8552fc2-20f8-4edc-947b-30c8cdb21a29,74d3da51-ffad-40f5-87d3-aa508434fecc,SAP Fiori ABAP QAS ECC OR9 SSO,Application,TRUE,SSO,UniqueUserIdentifier
+a97a47a7-52a0-4371-9dae-dd6c69e73dd1,0e566248-db82-4b7e-94ef-a3a192ababf7,SAP Fiori ABAP QAS GRC OG9 SSO,Application,TRUE,SSO,UniqueUserIdentifier
+516478ab-cdcc-4a13-a887-6278b70be067,a1edff61-623a-4bc8-ba31-9890848e32a9,SAP Fiori ABAP QAS ECC O10 SSO,Application,TRUE,SSO,UniqueUserIdentifier
+ed0c9e4c-3b9d-4024-a5d8-25730bb169d6,1e23df72-c802-4f14-84f7-b8fd18624890,Oracle analytics server (OASQA1),Application,TRUE,SSO,UniqueUserIdentifier
+3f45c60d-ad8e-40ed-a87a-12ce776bfc1a,0e564fdd-756c-4886-963a-3a2570fe2056,Nationalgrid.com Rebuild Prod SSO,Application,TRUE,SSO,UniqueUserIdentifier
+ec603491-540e-43c0-a5b0-7cd73ddb94fc,3395be58-d29c-42be-9c62-84b5d51d2e0f,Splunk Cloud DEV SOAR_Old,Application,TRUE,SSO,UniqueUserIdentifier
+f088e962-af3f-44bf-b868-df6b9a32ee4f,40d015d5-9ac9-4ddf-b623-8d79387ab987,US-GG-APP-RMD_PROD_openid SSO,Application,TRUE,SSO,UniqueUserIdentifier
+6077b351-b640-45a4-9981-1828711cbd1d,64e91d75-a071-48ea-a9f0-486de523132b,Nexthink Infinity,Application,TRUE,SSO,UniqueUserIdentifier
+c523e580-6d56-41c4-a5eb-d748ddc69fa3,fa3e1556-a193-454c-a4cb-fdb33eeb162f,My 640420 Payroll Ondemand SSO,Application,TRUE,SSO,UniqueUserIdentifier
+ea673173-3cb3-4215-bf14-bfb86b949ac6,3b74dc4a-3496-4344-bf26-eb78de636a35,Nationalgrid.com CMS (www.grainlng.com) SSO,Application,TRUE,SSO,UniqueUserIdentifier
+f8aa2836-7f42-4d69-9d53-deaed9945ed5,43f06a26-511c-4a8d-960f-825cdf484bf7,Splunk Cloud DEV SOAR,Application,TRUE,SSO,UniqueUserIdentifier
+596a4370-7144-45a4-8777-4202bdb90130,e10fae4a-c059-4c44-b19b-c098bf072186,GRAINLNG SSO,Application,TRUE,SSO,UniqueUserIdentifier
+4d3924d4-e0dd-41ce-b16c-ddaf809c1230,696b3457-7d0d-4342-ae9e-6535047a256d,STLF-UAT SSO,Application,TRUE,SSO,UniqueUserIdentifier
+ac3c463e-bbdf-4c8e-96ff-08105b65a350,ab537b8f-51aa-4e9b-9acd-cc5b5ee37801,SAP Fiori ABAP QAS ECC Q10 SSO,Application,TRUE,SSO,UniqueUserIdentifier
+62dd5915-0ba3-413c-b14e-d1594766be63,eeeaf71b-ba56-4eda-a96d-7c3895675f7a,enTrader NGV Test SSO,Application,TRUE,SSO,UniqueUserIdentifier
+b35607ac-94b0-4006-a0e7-d0841fa5d77b,39538c51-beea-40d3-8f8a-92ba73016e8d,enTrader NGV Prod SSO,Application,TRUE,SSO,UniqueUserIdentifier
+c9e6a4e5-4947-41f7-b707-371770df6187,60ad1d2d-e2a3-4528-bfc5-53fa555b4a57,INACTIVE-TEST-Comaea CC and IDnD Test SSO,Application,TRUE,SSO,UniqueUserIdentifier
+c4b4e00f-7d35-4a67-9aba-d094c7ad880c,f961647c-bdfe-4a8c-9498-e81d0613bbcd,SAP Fiori ABAP QAS GRC QG6 SSO,Application,TRUE,SSO,UniqueUserIdentifier
+82716429-5e12-4425-a06b-587a2db45776,232d9fee-0d38-4f47-8dba-35b861da6aba,Relish Email Connector,Application,TRUE,SSO,UniqueUserIdentifier
+0657fad6-c46f-4cbc-b30f-98397e2c6a5c,ff7b90e0-c1ef-4e9f-9dc1-2a9f8782bbe2,SAP ABAP QAS ECC QR9 SSO,Application,TRUE,SSO,UniqueUserIdentifier
+0f29069f-b3b7-40fc-9bab-6a1fdc9e65d7,ad510568-b0c4-4c90-abc1-62c5b9a9bd54,SAP ABAP QAS Fiori QT9 SSO,Application,TRUE,SSO,UniqueUserIdentifier
+52506f89-ac7e-4f62-9436-b42a24de11ed,de95a509-160b-4fb5-af3b-f15c06f519be,SuccessFactors T19 IAS,Application,TRUE,SSO,UniqueUserIdentifier
+43611e4a-23c2-4a99-ae4c-51f844693edd,c9730f87-429b-4191-8bd3-f4c9b919d133,Acquia Optimize,Application,TRUE,SSO,UniqueUserIdentifier
+09511b2b-37be-44b8-926c-785b184a37e3,6c78c4a4-1af9-4c6d-ac8b-ac2135a28f95,SAP Fiori US SS4- SBX 100,Application,TRUE,SSO,UniqueUserIdentifier
+767c0b6c-401b-4c2d-9cff-66df07636f6a,1a41f80a-7c20-48f3-8fdf-1a035e0c1f53,Bitwarden SSO,Application,TRUE,SSO,UniqueUserIdentifier
+33db50f7-2c4a-4c88-9578-701c0befeb21,0718b644-b0ef-48f4-bd53-9631cd7b339f,Palo Alto EDL-US SSO,Application,TRUE,SSO,UniqueUserIdentifier
+19a2cab2-968a-439c-b42d-0a33f8bfffef,a02c09f3-1548-43b0-a84a-a7cfa1d70446,AppReg-DWSCC-PnPRemoveOrphanedAdminAccess-Prod,Application,FALSE,SSO,UniqueUserIdentifier
+1c517199-8476-4632-af24-8ceba1363199,16e23362-25ec-4e99-9a11-e5922c8a3b9e,IoT Platform Production,Application,TRUE,SSO,UniqueUserIdentifier
+af454c0e-345b-440e-bc62-e3bd4ab9db78,d7113309-bcaa-4b1b-b9a8-d9fa0a21d9a1,snaplogic-ipaas-Prod SSO,Application,TRUE,SSO,UniqueUserIdentifier
+4b064d38-5bc1-4085-9d4c-4d55500c1f39,4e44a356-00ec-4b17-9a44-800d8cf073a0,GTIS2-Pre-Prod SSO,Application,TRUE,SSO,UniqueUserIdentifier
+2478294b-3820-4f16-81f2-b3cca20309f9,dbf85e74-ec62-4457-b50d-3164106759e7,DVN AVM DEV PROJECTS SSO,Application,TRUE,SSO,UniqueUserIdentifier
+f779a468-718b-4ab6-b452-a359708b6f0a,4cfd5c44-9c7e-48ba-b224-27580ae67ccf,HappyFox SSO,Application,TRUE,SSO,UniqueUserIdentifier
+2e760362-d379-473d-8afc-a023f09c2a15,1f0a0c80-f249-4047-a609-8e57ccbae0d9,aae-fof-uks-aaeresp-app-01 SSO,Application,TRUE,SSO,UniqueUserIdentifier
+5574acdf-6a8f-4e7a-9507-ca4a4e238409,8d6b81c6-0bd4-4c3f-8f28-467eb9df3346,Acquia SEO (Conductor) SSO,Application,TRUE,SSO,UniqueUserIdentifier
+7fa1a823-649a-495f-b99a-e944299a506c,500bfc70-67d9-49c4-a75f-61d87a928189,SAP Fiori US DS4- DEV 100,Application,TRUE,SSO,UniqueUserIdentifier
+98981584-ff04-45f3-b57a-44da8306722f,8c6196f9-68e9-4a43-9fc4-5c4121c1c224,SAP Fiori US DS4- DEV 300,Application,TRUE,SSO,UniqueUserIdentifier
+b9c53581-6231-43cc-8183-dcf18bce1278,1e4c4087-70bc-488c-93aa-2e4831c9ce5e,MarketPlace_UAT SSO,Application,TRUE,SSO,UniqueUserIdentifier
+c3f6b1bb-b5bf-4e7f-838d-47baa8407546,43849d78-d335-4d68-9f4a-0d63d5d37281,SAP Fiori US DS4- DEV 400,Application,TRUE,SSO,UniqueUserIdentifier
+dfb1f608-32e9-48b5-bb6a-e562574d7a95,c554c3b2-3502-4824-9c32-13c6431b4985,SAP GRC US DC1- DEV 100,Application,TRUE,SSO,UniqueUserIdentifier
+9c0d8ebe-5b8e-4dd8-950b-e313f63ff2a9,312184b0-387e-4694-9db1-bbe786423567,Architecture Workbench SSO,Application,TRUE,SSO,UniqueUserIdentifier
+5d26e678-b2ed-4425-82cf-1f35ce163792,d3758d3a-3370-4a34-ba42-fed8fe8cca95,SAP SSFS US J3F- Dev 100 SSO,Application,TRUE,SSO,UniqueUserIdentifier
+94af9790-eb4c-4bbd-b35e-fce8bf7e9499,e1758be1-d4ba-4817-bf82-bcc37ee3a2ae,HireVue T2O Sandbox SSO,Application,TRUE,SSO,UniqueUserIdentifier
+96425ec8-2080-4ba2-8278-287c2c0587f9,04770588-6bcb-48ce-937d-b03f3bf82826,Broadcom SSO,Application,TRUE,SSO,UniqueUserIdentifier
+89f75893-4fe2-41b5-8454-12815347453a,ecee7740-c923-4594-b29a-e4836b226c3c,SuccessFactors T6 IAS,Application,TRUE,SSO,UniqueUserIdentifier
+f8b175bb-bbaa-4a1a-bc44-e228ae449d70,a76a47a7-6ef9-41ae-adb1-74ad5c0fe770,SAP SuccessFactors HappyDance,Application,TRUE,SSO,UniqueUserIdentifier
+9f3e8541-6e45-4ce1-bf49-d3fe30a2402e,2aaaff82-8875-4389-9d9d-e91419910da0,STLF-PROD SSO ,Application,TRUE,SSO,UniqueUserIdentifier
+29b6e078-372f-4234-8695-13b08ba7bd0c,78de4105-71c2-4e9c-81a2-2bffd5fea0d1,oracle analytics server (OASFOFRCU) SSO,Application,TRUE,SSO,UniqueUserIdentifier
+18f2e72b-3e5f-4f42-8e0a-c8e0e4c31fc4,75748220-c117-4659-868e-d694061e5b7e,Intune Pentest SSO,Application,TRUE,SSO,UniqueUserIdentifier
+0dcc3be8-f6be-4e3b-9573-2c28d30c0358,8fb4e4f6-eeac-490b-be64-0e224fd4b5ce,AAR-NY-UAT SSO,Application,TRUE,SSO,UniqueUserIdentifier
+6d34cfa1-e4eb-4e45-a89d-47f2c38a0798,282daa6f-aacd-46bb-9242-652f1fb8430d,My 640421 Payroll Ondemand SSO,Application,TRUE,SSO,UniqueUserIdentifier
+0dc8eb60-ad2d-4c09-9367-b2b5f92cb63e,ef38047c-3301-4184-ae55-09f4912d741e,My 640422 Payroll Ondemand SSO,Application,TRUE,SSO,UniqueUserIdentifier
+bba650cf-f2d7-4b2d-b83a-7966948aa6fa,99b5e410-b11b-484b-b796-4c69d7e09138,DEPGrafana SSO,Application,TRUE,SSO,UniqueUserIdentifier
+e5a2ca32-6620-4d41-8548-467247dfda82,97a8d747-be9c-45a0-a5b7-266a9ae4f10c,aae-fof-uks-aaemfrm-app-01 SSO,Application,TRUE,SSO,UniqueUserIdentifier
+b5ea0188-f696-454f-be63-ad01984196f4,0d9a6ea4-724b-4a2d-b84e-5d9a4b91c1c1,Connect AI Dev SSO,Application,TRUE,SSO,UniqueUserIdentifier
+4707ae9b-9826-433e-ae8a-5ccf6919707b,4181b16e-4506-4699-8dd4-32182e6b8a0e,YubiEnterprise Console POC,Application,TRUE,SSO,UniqueUserIdentifier
+10cbb513-3265-492f-9e29-76e39f54d660,9264dd44-15d5-478b-8047-80af5164c086,WorkForce Time and Attendance DEV SSO,Application,TRUE,SSO,UniqueUserIdentifier
+4c75cb0e-b7a4-443e-8a4b-e1ac7be0f462,c948d077-6e5e-42ba-af6a-68fbfe3234fc,S4BFiori SSO,Application,TRUE,SSO,UniqueUserIdentifier
+ac80196b-b532-464c-a3e6-cc3170297863,53684bfc-705e-47d5-976a-c624d467784c,Line Diagram Analyzer UAT,Application,TRUE,SSO,UniqueUserIdentifier
+d1e8641b-9ef8-4bf7-8a60-5c2f2a8d5e16,351acbf6-ae53-44dd-910d-9f54aaf28138,SentinelOne (SSN Environment) SSO,Application,TRUE,SSO,UniqueUserIdentifier
+eea5d4b3-7b52-45c1-a833-82b369945792,e6f9d8e8-78da-4d8a-b660-c951d7013416,etdigital-thermalratings-api-prod SSO,Application,TRUE,SSO,UniqueUserIdentifier
+82f6613c-ec2f-46a3-bfdd-5ecaacb7992a,35a2b6c3-91d0-4db0-98f0-bf2ddaf7e310,etdigital-thermalratings-spa-prod SSO,Application,TRUE,SSO,UniqueUserIdentifier
+d10952e3-baeb-4fbb-a4a0-be598b7ee4fa,19fa6bce-01ec-49cf-a885-54b21deea73c,Connect AI Test SSO,Application,TRUE,SSO,UniqueUserIdentifier
+a0d42b7d-9e62-44f9-ac94-daa61fe994a3,8cee2818-c018-48a1-b7f2-b89f6a7ff2b5,YubiEnroll,Application,TRUE,SSO,UniqueUserIdentifier
+89e77b87-1b93-4035-abd5-669e9a04190d,68e6c27f-1a17-4d73-856a-e72c2fb73730,SAP Blackline_Dev_Test SSO,Application,TRUE,SSO,UniqueUserIdentifier
+ef6b5ca6-c73a-4b9f-b3c3-57deeb1752a7,7c3ba6c1-ddba-4e13-a9c4-76b8ec62e395,Enhanced Attack Paths Preprod SSO,Application,TRUE,SSO,UniqueUserIdentifier
+7dbddaa1-2e2d-4e06-b792-c5438d0bf0ae,e6ce44e6-e82e-4719-960c-31588ea6cb6e,Confluence atlassian Dev SSO,Application,TRUE,SSO,UniqueUserIdentifier
+e575902f-e47e-48d3-9a5c-1f3f98657f40,ba933f87-38f0-4453-a7ba-baf9784ea9ff,Innovation Day SSO,Application,TRUE,SSO,UniqueUserIdentifier
+d833e229-9caf-44ce-a058-d0dbe86e9339,6cfa002a-c7ed-4d39-9a62-5604b8676ffd,L+G KeyCloak NonProd SSO,Application,TRUE,SSO,UniqueUserIdentifier
+22729f58-5e29-460f-b7e8-b43b3dc8aea0,3a3dcf4c-3878-4590-884e-1b0afcfb4eec,Connect AI Website,Application,TRUE,SSO,UniqueUserIdentifier
+bf6e52bf-c961-430f-a99b-8b5eead60291,685acebc-b52b-456e-a33b-efde62f804b6,SuccessFactors D2 IAS SSO,Application,TRUE,SSO,UniqueUserIdentifier
+0b638e6a-18ae-4ac8-84eb-cdef12f7b20b,30ac3b67-2161-4434-af39-1b5f7ea53ecf,GTIS2-prod-cus-durable-function-monitor SSO,Application,TRUE,SSO,UniqueUserIdentifier
+9742b448-0ec9-4fee-bef2-98c077497526,3123bdc3-02cc-4052-b2bf-d09b501bd0b1,GTIS2-preprod-cus-durable-function-monitor SSO,Application,TRUE,SSO,UniqueUserIdentifier
+e4ee2ed3-725e-4ce7-b949-42a2b9024ff8,0d5ea464-2d55-4331-8844-853e59648ca7,GTIS2-preprod-eus2-durable-function-monitor SSO,Application,TRUE,SSO,UniqueUserIdentifier
+06f19bf5-a647-4d57-bb95-c98c2c84577b,afcd2f6e-7e36-4af9-aaab-df1aea2aa171,WorkForce Time and Attendance Test SSO,Application,TRUE,SSO,UniqueUserIdentifier
+d4cee217-20cb-4ea5-8c11-81b80328d39e,2fe7b2af-7706-42e3-842f-bec4fe30ccfb,GTIS2-perf-eus2-durable-function-monitor SSO,Application,TRUE,SSO,UniqueUserIdentifier
+745a5e61-9345-4122-a23f-c23e2cc56581,f019a983-ca42-4f37-b60e-cedc1d15c99f,Itonics innovation management platform SSO,Application,TRUE,SSO,UniqueUserIdentifier
+571fa8be-d2f4-4351-b289-706023546e39,421d9d0e-e1ba-47a0-80b3-845c71ea6cd5,Oracle Analytics Server (OASPRODRCU) SSO,Application,TRUE,SSO,UniqueUserIdentifier
+dee49958-d808-4171-941c-594842552fd4,0e3fec73-2267-4bd1-a9b4-4a10a43f7570,SAP JAVA OV9 Dev SSO,Application,TRUE,SSO,UniqueUserIdentifier
+f9140e76-62bc-4fe8-ac25-9ad5871564a7,13c38fce-6891-45d7-a859-b36e252d4609,DERMSTactical-NE-UAT-SSO,Application,TRUE,SSO,UniqueUserIdentifier
+75797862-3ccf-4fb9-be04-f4e38788c4da,392850f5-6aab-477b-9969-bd27d1dbbca0,SAP Fiori US QS4- QAS 100 SSO,Application,TRUE,SSO,UniqueUserIdentifier
+e7f53733-562d-4c7b-8be2-9709151a824f,dbcb966c-d6f1-4a93-ab28-1bfcbcf0d9ad,SAP GRC US QC1- QAS 100 SSO,Application,TRUE,SSO,UniqueUserIdentifier
+c0d16ceb-aa40-45ab-9dc0-e161c8b827ff,5a0df5e6-9c77-4143-870c-3e3b01fad32f,layerX security SSO,Application,TRUE,SSO,UniqueUserIdentifier
+0ad3de9f-91a1-40fa-94aa-c23f86cd28d7,abf2afc9-d5c1-49e4-9b11-5351e94c4f4e,CyberArk JIT POC,Application,TRUE,SSO,UniqueUserIdentifier
+9655260f-9121-4d25-adab-0120b08b4c33,489d409a-6c09-489d-933e-1069ae83d170,SAP JAVA OVN Dev SSO,Application,TRUE,SSO,UniqueUserIdentifier
+69902afe-e2db-4aab-b903-659e31979b02,45d87ace-b4a3-4cf1-86bc-344f8b9c1e26,BeyondTrust Security Provider SSO,Application,TRUE,SSO,UniqueUserIdentifier
+84898ec3-6326-42ce-a543-0733aaa9ac83,115dbf15-7938-4415-82d9-9d0e72ebaed0,Learning Experience Platform (LXP),Application,TRUE,SSO,UniqueUserIdentifier
+c70ec755-6518-48e9-ab53-89f8caf54dc5,e365b0b9-115d-463d-aa7b-78572e06ea9d,DevEx Management Portal SSO,Application,TRUE,SSO,UniqueUserIdentifier
+35a13d98-2f71-46f1-a9b6-9bb094a4d2af,fc26b241-aa96-46a6-8638-c7a04cc5c3b7,SAP Business Objects SAML SSO,Application,TRUE,SSO,UniqueUserIdentifier
+ab922186-14b3-4059-94a2-5c9015da555a,aab858d4-266f-4162-b6f6-74dacabbfa65,LinkedIn Learning Successfactor Factor D2 SSO,Application,TRUE,SSO,UniqueUserIdentifier
+a6a23945-65e2-49ce-8fdd-f46258db5423,d7a82831-7bb8-4912-b418-500f84333c6f,Enhanced Attack Paths Epsilon Dev SSO,Application,TRUE,SSO,UniqueUserIdentifier
+2d86f60a-c2fc-42aa-bfa3-c31737e500f3,3b95faf3-e6e1-4978-8ae5-1c4c45b62424,NYISODev SSO,Application,TRUE,SSO,UniqueUserIdentifier
+8ccbd011-b633-4a57-b820-b8085f626089,a9318dea-e07d-4a05-bf74-a8d3e1163f5a,JIRA-SCADA ET,Application,TRUE,SSO,UniqueUserIdentifier
+eb8fb321-e35a-47fd-9bb8-65342bc3b303,cb9d6520-9890-4534-b751-00106d883a4b,OTMigrationApp,Application,TRUE,SSO,UniqueUserIdentifier
+bd09235b-b15c-48dd-9040-e65eb2200a12,14ef1a9d-986a-4a02-8903-9ed66358dd62,SuccessFactors T11 IAS Dev SSO,Application,TRUE,SSO,UniqueUserIdentifier
+62beda82-b07c-4a74-b53c-de3683448a68,411e5845-49a1-45fc-90c6-818cbb46bb49,aae-fof-uks-aaecspn-app-01 SSO,Application,TRUE,SSO,UniqueUserIdentifier
+a966bb3f-1503-4b14-a44a-15775848965d,df181299-b7d7-4f8f-b183-dc02dac0269a,SAP JAVA QV8 DEV SSO,Application,TRUE,SSO,UniqueUserIdentifier
+9660308a-09ff-493b-bdb3-4a6938982967,54e9fc34-3e30-45ee-a2c7-6415304159a5,248333-dev-eus2-etr21-app-1,Application,TRUE,SSO,UniqueUserIdentifier
+3b658364-85e5-4b43-9880-16d7cc03dda2,8afb1505-ddc3-4de1-8fff-338e25d427f5,National Grid Clean Energy Trade Ally Network SSO,Application,TRUE,SSO,UniqueUserIdentifier
+b186c85d-cd32-4a78-a632-d88d5dd545ff,25cbd01a-6afc-4122-851f-60679d72f0d5,ConnectNow-Admin Portal PreProd SSO,Application,TRUE,SSO,UniqueUserIdentifier
+a9e14882-b71d-4c66-9489-bf8aa91d2679,e0d4d307-51da-4e8c-837f-eb777e760b91,Fulcrum Restoration and Paving SSO,Application,TRUE,SSO,UniqueUserIdentifier
+8ca79e46-7226-4211-820f-f1c00f19aff1,fae7b8b4-cddb-4fc4-9307-c860b0cd9265,SAP ABAP QAS ECC OR3 DEV SSO,Application,TRUE,SSO,UniqueUserIdentifier
+0c6979be-c4bd-4e86-b8f4-3cf9411e068d,06748112-7a0a-497f-9d69-8340b8ccb53a,SAP ABAP QAS FIORI OT3 SSO,Application,TRUE,SSO,UniqueUserIdentifier
+bb7be18f-f59f-4661-b23e-5fc62b670a5d,c786d57e-72ae-4bc2-b00b-a9a12943d378,SAP SuccessFactors T10,Application,TRUE,SSO,UniqueUserIdentifier
+93309ca0-d4a3-47a2-a6db-c5d6d7247ba9,143401b7-e1f3-49f5-9afd-bba47322b312,Engage SF6 DEV,Application,TRUE,SSO,UniqueUserIdentifier
+3b00b4ed-2b02-44b6-b61b-6f2113127e2c,08cfa1bb-7862-48a8-9596-8d786c8befed,aae-fof-uks-aaesdbx-app-01-SSO,Application,TRUE,SSO,UniqueUserIdentifier
+1fd7a9d1-f693-44bb-93d0-875390d51048,9426a144-f1b6-48d0-8a60-bc1715063b5f,S4CFIORI400 SSO,Application,TRUE,SSO,UniqueUserIdentifier
+79bf1ffd-9c67-453d-973b-8d49f591560e,dd16de96-b5cc-440e-b300-97a6667cb0fd,S4HCLNT100 SSO,Application,TRUE,SSO,UniqueUserIdentifier
+8c2d02bd-c06e-43af-b15e-a1646bb1cd50,96ceacea-7f73-4871-8ad2-729e63f3fca3,External Chatbot - Copilot Studio NonProd SSO,Application,TRUE,SSO,UniqueUserIdentifier
+85532700-3b53-4640-b475-df5df69144c8,121caef6-97c7-4c7d-a120-c6a542b6a786,HPE Greenlake,Application,TRUE,SSO,UniqueUserIdentifier
+54a4ec41-6fd8-4729-8ad8-31fc2b24d6f9,e2ce37d6-769a-4fa8-b8b3-c54934c8cdd4,Interconnectors Salesforce Partial Sandbox SSO,Application,TRUE,SSO,UniqueUserIdentifier
+4ec36381-f38a-44db-bad0-3ee4b431a4e5,dd3798d7-5059-4b56-95b1-5afe2966aece,INACTIVE-Interconnectors Salesforce PerformaIT Sandbox SSO Old NOT WORKING,Application,TRUE,SSO,UniqueUserIdentifier
+b2541096-f245-479d-87e2-479ca4ead62e,bc8692c2-e07c-41ac-b9d0-7314c976bb5c,AZ-PR-SPN-SuccessFactors_IAS_AD_natgridProd_SSO,Application,TRUE,SSO,UniqueUserIdentifier
+bd5ceacc-5b1f-4938-993a-697a0b4795ae,85515cc6-a68a-4f15-812f-72df296490fa,nerdio-nmw-app,Application,TRUE,SSO,UniqueUserIdentifier
+50cd922f-add6-4c2a-99a0-11dc8688beb4,4427b8a5-b2a0-43de-99d8-9b35b189390e,GINIUS SIT NonProd Portals,Application,TRUE,SSO,UniqueUserIdentifier
+a086433a-714d-48fa-b945-2a1fc28d4ff7,7a6ec19e-4eb7-4fd0-8961-936a743fc246,AZ-PR-SPN-Damage Tracking System (DTS)_SSO,Application,TRUE,SSO,UniqueUserIdentifier
+b61137c0-fe45-4669-851d-29924c85f1c5,0ffc8606-3e00-4535-b952-2f565bb11bd6,Xerox Workplace Cloud Native Authentication App,Application,TRUE,SSO,UniqueUserIdentifier
+a16c288a-a8a1-4e67-8e1d-7a099e89999c,1b3a930c-8242-41f3-81cd-9b7be7a4e10f,AZ-PP-SPN-Copperleaf_USGas_DEV SSO,Application,TRUE,SSO,UniqueUserIdentifier
+18ae9306-d236-42f1-a2f9-e77e54ff1856,651b8f0f-6d05-444a-94b9-d5f58a2f1bc2,Xerox Workplace Cloud Single Signon for client,Application,TRUE,SSO,UniqueUserIdentifier
+fb76e4a7-1bf2-408c-bbb9-c667cff6db41,a9f84551-68e2-469f-ba86-dd477573a8d9,AZ-PR-SPN-Cognassist SSO,Application,TRUE,SSO,UniqueUserIdentifier
+e7b79f4f-ed8a-47c4-b03b-276be34a7a6f,57e7a821-4ca8-4a6c-b22d-63e97214b28f,CIAM-based TR Account platform SSO,Application,TRUE,SSO,UniqueUserIdentifier
+455d9cc9-8599-4611-b243-0786a1b57a1e,31577575-f437-43f2-98f7-805419f182c6,AZ-PP-SPN-GTIS2-preuat-durable-function-monitor SSO,Application,TRUE,SSO,UniqueUserIdentifier
+3d47660b-9135-4d81-bd4d-83f32b625a66,85d8442a-5d1a-459f-a04e-8548c06ea19f,AZ-PP-SPN-FastDraft Test SSO,Application,TRUE,SSO,UniqueUserIdentifier
+b1f3587c-fd5a-46c8-936a-369804c500a2,d08dcaee-9464-492d-97ab-bc83fc06e759,AZ-APP-PR-SPN-Sphereboard SAML-SSO,Application,TRUE,SSO,UniqueUserIdentifier
+e7c77af3-635c-4ab1-aee3-8a2d89a8eb40,a352c3b2-7657-4d6e-9e06-fc75ed4a2aac,AZ-PR-SPN-Plexos Playbook SSO,Application,TRUE,SSO,UniqueUserIdentifier
+1b30a7f9-f62f-419b-a379-efdef7c60fc9,fa461b26-14c0-4960-99c6-f3c18a6eecc7,AZ-PP-SPN-ITOA-USER-NGRID-QA-SSO,Application,TRUE,SSO,UniqueUserIdentifier
+125cf65e-c5cc-405d-9da6-94df2c4832e2,9e309abe-28b3-4d56-8094-ac2b2931dcd4,AZ-PP-SPN-ITOA-ADMIN-NGRID-QA-SSO,Application,TRUE,SSO,UniqueUserIdentifier
+5601c4e9-352e-47d8-8d44-c783de37bba0,ce93b9a2-7433-45eb-925d-7e6406ffa35f,AZ-PR-SPN-Copperleaf_USGas_PROD SSO,Application,TRUE,SSO,UniqueUserIdentifier
+02f67e65-1e4a-484b-a5d5-bb7ce4a6767e,206c2527-d27b-480c-81ce-2e5eec12a7c8,SAP GRC US QC2- QA2 100,Application,TRUE,SSO,UniqueUserIdentifier
+346355a7-b953-40f6-9cf8-71d194bbaebc,a72a715d-2fb1-477b-ae5a-9f0c28cbb337,AZ-PP-SPN-ServiceNow gridProd SSO,Application,TRUE,SSO,UniqueUserIdentifier
+1e176e38-811d-4080-b55a-0f26616346b7,791c40be-2b46-45ef-b821-d313cebc36b8,AZ-PR-SPN-Coupa_Prod SSO,Application,TRUE,SSO,UniqueUserIdentifier
+33df0270-fbc7-463b-9cb6-21a6a81bb233,6b3902bc-9e94-4a5e-95d9-6321657fa7ac,AZ-PP-SPN-SAP ECP US KIH - Mock 100 SSO,Application,TRUE,SSO,UniqueUserIdentifier
+3c982ffc-8ad2-45ad-82cc-ddae88d2a940,20b5fbca-8d2c-49d5-aa88-ed63980240fa,National Grid SI FME FLOW Dev,Application,TRUE,SSO,UniqueUserIdentifier
+5e97d082-5e4f-420f-8d50-ec4e82400a92,ed9f38d8-4287-4d17-b40b-db3321566eca,SuccessFactors T9 IAS,Application,TRUE,SSO,UniqueUserIdentifier
+e3eb2a4c-54fa-48c0-b1ce-50313a0fd508,7950e4be-64ca-4b1a-9905-0df1c83df412,AZ-PR-SPN-Comaea CND and ID SSO,Application,TRUE,SSO,UniqueUserIdentifier
+f4d953d9-dc49-420b-b789-117096ad81cc,911e57d2-5a6c-47eb-9f63-63e12458720a,AZ-PR-SPN-ArcMap URD Mapping Tool,Application,TRUE,SSO,UniqueUserIdentifier
+8e9e3b17-2e7b-4bff-8c36-b32b2d28aea9,303cc45e-fc9b-4b2f-94e3-f6ec40ff0817,AZ-PR-SPN-NGTaxDev_SSO,Application,TRUE,SSO,UniqueUserIdentifier
+18d2d3bc-0090-4594-9b93-6d5c19141edd,6b60e56c-30ff-48cc-8fe4-e64228ba3090,GTIS2-Staging,Application,TRUE,SSO,UniqueUserIdentifier
+0b715472-0fc2-40f2-89a2-0a9f9ce4c3a7,d3ba8e76-a62f-4455-9e14-14be695642e6,AZ-PR-SPN-Informatica Cloud Services SSO,Application,TRUE,SSO,UniqueUserIdentifier
+dabe07ef-92f5-43ff-938c-2702b199b406,96d4d6b2-6a8b-463a-937f-8075547c0f61,AZ-PR-SPN-GTIS2-Staging-Dashboard SSO,Application,TRUE,SSO,UniqueUserIdentifier
+b24f1fa1-5cc2-4194-ad38-5a48085a212c,08227a95-c752-4024-a456-b062556e863c,AZ-PR-SPN-GTIS2-Hotfix-Dashboard SSO,Application,TRUE,SSO,UniqueUserIdentifier
+864569b2-46a7-481f-9324-1234d6665db4,ac91c34f-7cc1-46af-8bac-46601f3e047a,AZ-PR-SPN-natgridT8 MyHub_SSO,Application,TRUE,SSO,UniqueUserIdentifier
+fc67cbaf-cf76-4478-a5b4-f31fa94e0876,c8a3091b-3a41-4ab5-88e4-5b9b6079dde6,AZ-PR-SPN-Synergi_Solver_Job_Queue_Web_Portal_SSO,Application,TRUE,SSO,UniqueUserIdentifier
+1873f678-a8e1-4e7e-a51d-70494eb3741d,435c28c0-7409-4c4b-bfd7-8456ab3ca6b7,AZ-PR-SPN-Engage SF6 PROD SSO,Application,TRUE,SSO,UniqueUserIdentifier
+9a449f55-f62c-4794-a117-4d74ff654fb4,9c87caf4-0494-49be-9c9a-f78a11a977b3,AZ-PR-SPN-Orca_SSO,Application,TRUE,SSO,UniqueUserIdentifier
+16e6414d-9074-4041-84e6-9290549fb10b,e104c509-5a1b-4da8-8fd3-4556b7f47302,SAP Identity Authentication Service (IAS) - US,Application,TRUE,SSO,UniqueUserIdentifier
+9ed6e3ba-1f19-4d64-b7de-8b5423e6aad8,87da0f6a-7e80-4623-91ea-47c0104b406f,AZ-PR-SPN-Longview 2.0_SSO,Application,TRUE,SSO,UniqueUserIdentifier
+2657c472-6037-402f-a665-d05f8b50be29,001bf06a-ce81-4d13-a747-2c30130579d4,AZ-PR-SPN-Keen AI File Transfer_SSO,Application,TRUE,SSO,UniqueUserIdentifier
+af332ac2-730d-4c69-9d21-8ae350c47f30,cabb4379-3f8e-495f-abf0-9f76af8874bf,AZ-PR-SPN-SWA_5877a-dev-eus2-speed-swap-04_SSO,Application,TRUE,SSO,UniqueUserIdentifier
+fee6b045-1569-458c-a39b-dd535408ccf3,5805e42b-3330-4d4b-80f4-969c02f29437,AZ-PR-SPN-Oracle_Unifier_Accelerator SSO,Application,TRUE,SSO,UniqueUserIdentifier
+d039685c-2207-46a0-a098-8d0166c1877b,e40835a6-b31f-4302-b312-8a3cff9c9745,AZ-PR-SPN-Damages Tracking System Prod SSO,Application,TRUE,SSO,UniqueUserIdentifier
+917763ca-5440-487a-8192-7d82de824b8c,54a8c522-bf75-49e0-b432-5b56cfb02c7c,AZ-PP-SPN-S4V-azuks-snppp01 SSO,Application,TRUE,SSO,UniqueUserIdentifier
+1c249681-d95a-418a-a3cd-9f2fd2027c52,710d7907-7d3d-42bb-843e-c45ae03bb8c5,GINIUS DEV Portals,Application,TRUE,SSO,UniqueUserIdentifier
+5b2db0c1-2e72-40b8-a808-33c4b9076b0b,417e97a2-a913-4e48-9a23-acaaed2552ba,AZ-PP-SPN-VSF-azuks-snppp02 SSO,Application,TRUE,SSO,UniqueUserIdentifier
+95748b6c-7af2-4730-abd5-aaa351eab047,e1643533-ee6e-4905-9eb6-43a946cd4b3f,AZ-PR-SPN-PowerPlan_SSO,Application,TRUE,SSO,UniqueUserIdentifier
