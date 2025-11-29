@@ -181,8 +181,10 @@ driver.get("https://portal.azure.com")
 wait = WebDriverWait(driver, 20)
 
 # Username
+username = os.getenv("AZURE_USERNAME")
+
 wait.until(EC.visibility_of_element_located((By.ID, "i0116"))).send_keys(
-    "SECADM_EHanlon.Miller@nationalgridplc.onmicrosoft.com"
+    username
 )
 driver.find_element(By.ID, "idSIButton9").click()
 

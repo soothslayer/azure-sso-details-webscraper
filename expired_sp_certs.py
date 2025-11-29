@@ -3,8 +3,19 @@ import time
 import datetime
 import requests
 
+# Selenium imports
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from webdriver_manager.chrome import ChromeDriverManager
+import pyotp
 
-# ------------- Auth helpers -------------
+
+# =========================
+#  Auth helpers (Graph)
+# =========================
 
 def get_graph_token():
     tenant_id = os.environ["AZURE_TENANT_ID"]
@@ -42,7 +53,9 @@ def ensure_graph_token():
     return graph_token
 
 
-# ------------- Helpers -------------
+# =========================
+#  Date helper
+# =========================
 
 def parse_iso_utc(dt_str):
     if not dt_str:
@@ -58,32 +71,77 @@ def parse_iso_utc(dt_str):
     return dt.astimezone(datetime.timezone.utc)
 
 
-def delete_certificate_for_sp(sp_id, remaining_key_creds):
-    """
-    Delete a certificate by PATCHing the service principal's keyCredentials
-    to a list that excludes the expired cert.
-    """
-    token = ensure_graph_token()
-    url = f"https://graph.microsoft.com/v1.0/servicePrincipals/{sp_id}"
-    headers = {
-        "Authorization": f"Bearer {token}",
-        "Content-Type": "application/json",
-    }
-    body = {"keyCredentials": remaining_key_creds}
+# =========================
+#  Selenium login helpers
+# =========================
 
-    resp = requests.patch(url, headers=headers, json=body)
-    if resp.status_code not in (200, 204):
-        print(f"  !! Failed to update keyCredentials: {resp.status_code} {resp.text}")
-    else:
-        print("  -> Expired certificate removed from keyCredentials.")
+def login_to_azure_portal(driver, wait):
+    # Update username if needed
+    username = os.getenv("AZURE_USERNAME")
+    password = os.getenv("AZURE_PASSWORD")
+    totp_secret = os.getenv("AZURE_TOTP_SECRET")
+
+    driver.get("https://portal.azure.com")
+
+    # Username
+    wait.until(EC.visibility_of_element_located((By.ID, "i0116"))).send_keys(username)
+    driver.find_element(By.ID, "idSIButton9").click()
+
+    # Password
+    wait.until(EC.visibility_of_element_located((By.ID, "i0118"))).send_keys(password)
+    driver.find_element(By.ID, "idSIButton9").click()
+
+    # TOTP MFA (if prompted)
+    if totp_secret:
+        try:
+            totp = pyotp.TOTP(totp_secret, interval=60).now()
+            code_box = WebDriverWait(driver, 20).until(
+                EC.visibility_of_element_located((By.ID, "idTxtBx_SAOTCC_OTC"))
+            )
+            code_box.send_keys(totp)
+            driver.find_element(By.ID, "idSubmit_SAOTCC_Continue").click()
+        except Exception as e:
+            print(f"[MFA] No TOTP prompt or failed to enter code: {e}")
+
+    # Stay signed in? Yes
+    try:
+        stay_btn = WebDriverWait(driver, 20).until(
+            EC.element_to_be_clickable((By.ID, "idSIButton9"))
+        )
+        stay_btn.click()
+    except Exception:
+        pass
+
+    print("[Selenium] Logged into Azure Portal.")
 
 
-# ------------- Main -------------
+def open_saml_sso_blade(driver, sp_id, app_id):
+    url = (
+        "https://portal.azure.com/"
+        "#view/Microsoft_AAD_IAM/ManagedAppMenuBlade/~/SignOn"
+        f"/objectId/{sp_id}"
+        f"/appId/{app_id}"
+        "/preferredSingleSignOnMode/saml"
+        "/servicePrincipalType/Application/fromNav/"
+    )
+    print(f"[Selenium] Opening SAML SSO blade: {url}")
+    driver.get(url)
+
+
+# =========================
+#  Main logic
+# =========================
 
 def main():
     now_utc = datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc)
 
-    # All service principals; you can add filters if you want to narrow scope
+    # Selenium setup
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+    wait = WebDriverWait(driver, 20)
+
+    login_to_azure_portal(driver, wait)
+
+    # Filter to IAM-tagged service principals
     url = (
         "https://graph.microsoft.com/v1.0/servicePrincipals"
         "?$filter=tags/any(t:t eq 'IAM')"
@@ -113,13 +171,7 @@ def main():
                 print("  -> No keyCredentials; skipping.")
                 continue
 
-            # Work on a local copy so we can update it when we "delete"
-            current_creds = list(key_creds)
-
-            any_expired_handled = False
-
-            for cred in list(current_creds):  # iterate over copy
-                # Treat only X509 certs; you can relax this if needed
+            for cred in key_creds:
                 cred_type = cred.get("type")
                 if cred_type and "AsymmetricX509Cert" not in cred_type:
                     continue
@@ -148,7 +200,7 @@ def main():
 
                 # Check if there is another newer active cert
                 newer_active_exists = False
-                for other in current_creds:
+                for other in key_creds:
                     if other is cred:
                         continue
                     other_type = other.get("type")
@@ -175,30 +227,20 @@ def main():
                         break
 
                 if not newer_active_exists:
-                    print("  !! No newer active certificate found. Will NOT offer deletion.")
+                    print("  !! No newer active certificate found. Will NOT prompt for manual deletion.")
                     continue
 
-                # There is a newer active cert; offer deletion
-                answer = input(
-                    "  Delete this expired certificate (safe: newer active exists)? (y/n): "
-                ).strip().lower()
+                # There IS a newer active cert → open SAML SSO blade and wait for you
+                open_saml_sso_blade(driver, sp_id, app_id)
+                input("  Delete the expired certificate in the portal, then press Enter to continue...")
 
-                if answer == "y":
-                    # Build remaining list without this cert
-                    remaining = [c for c in current_creds if c.get("keyId") != cred_key_id]
-                    #delete_certificate_for_sp(sp_id, remaining)
-                    # Update local state so subsequent checks use the updated list
-                    current_creds = remaining
-                    any_expired_handled = True
-                else:
-                    print("  Skipping deletion for this certificate.")
-
-            if not any_expired_handled:
-                print("  -> No expired certificates were deleted for this service principal.")
+            # end for cred
 
         url = data.get("@odata.nextLink")
 
-    print("\nDone. All service principals processed.")
+    print("\nDone. All IAM-tagged service principals processed.")
+    input("Press Enter to close the browser...")
+    driver.quit()
 
 
 if __name__ == "__main__":
