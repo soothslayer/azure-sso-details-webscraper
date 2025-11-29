@@ -97,7 +97,7 @@ def update_sso_attributes_for_sp(sp_id: str, name_id: str, token: str):
     else:
         print(
             f"Updated SSO attributes for {sp_id} "
-            f"-> UniqueUserIdentifier='{name_id}', LastUpdated='{rounded}'"
+            f"-> UniqueUserIdentifier='{name_id}', LastUpdated='{utc_now}'"
         )
 
 def parse_iso(dt_str):
