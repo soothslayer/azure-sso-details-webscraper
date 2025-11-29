@@ -1,166 +1,165 @@
-import os
-import time
-import pyotp
-import csv
-import requests
-from azure.identity import ClientSecretCredential
+#!/usr/bin/env python3
+"""
+portal3.py
+
+End-to-end script:
+
+1. Uses Microsoft Graph to find IAM-tagged service principals whose
+   SSO.UniqueUserIdentifier CSA is missing or "Unknown".
+2. Logs into Azure Portal with Selenium.
+3. For each target SP:
+   - Opens the SAML SSO blade.
+   - Scrapes the "Unique User Identifier" from the page.
+   - Updates the CSA (and LastUpdated) based on audit log rules.
+"""
+
 import datetime
-
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from webdriver_manager.chrome import ChromeDriverManager
-
-# ----------------------------
-# CONFIG - fill these in
-# ----------------------------
-TENANT_ID = os.getenv("AZURE_TENANT_ID", "<your-tenant-id>")
-CLIENT_ID = os.getenv("AZURE_CLIENT_ID", "<your-client-id>")
-CLIENT_SECRET = os.getenv("AZURE_CLIENT_SECRET", "<your-client-secret>")
-
-GRAPH_SCOPE = "https://graph.microsoft.com/.default"
-GRAPH_ROOT = "https://graph.microsoft.com/v1.0"
-
 import time
 
-def get_graph_token():
-    tenant_id = TENANT_ID
-    client_id = CLIENT_ID
-    client_secret = CLIENT_SECRET
+from selenium.webdriver.common.by import By
+from selenium.common.exceptions import NoSuchElementException
 
-    token_url = f"https://login.microsoftonline.com/{tenant_id}/oauth2/v2.0/token"
-    data = {
-        "client_id": client_id,
-        "client_secret": client_secret,
-        "scope": "https://graph.microsoft.com/.default",
-        "grant_type": "client_credentials",
-    }
+from common.graph_utils import graph_get, graph_patch
+from common.time_utils import parse_iso_utc, utc_now_rounded_minute
+from common.selenium_utils import create_driver, login_to_azure_portal, open_saml_sso_blade
 
-    resp = requests.post(token_url, data=data)
-    resp.raise_for_status()
 
-    j = resp.json()
-    access_token = j["access_token"]
+# -----------------------------
+# Helper functions
+# -----------------------------
 
-    # expires_in is usually 3600 seconds
-    expires_in = j.get("expires_in", 3600)
-    expires_at = time.time() + expires_in - 60  
-    # ^ subtract 60s so you refresh slightly early instead of failing
+def build_progress_bar(index: int, total: int, bar_len: int = 30) -> str:
+    if total <= 0:
+        return "[------------------------------] 100.0%"
+    percent = index / total * 100
+    filled = int(bar_len * index / total)
+    bar = "#" * filled + "-" * (bar_len - filled)
+    return f"[{bar}] {percent:5.1f}%  ({index}/{total})"
 
-    return access_token, expires_at
 
-def ensure_graph_token():
-    global graph_token, graph_token_expires_at
-
-    # if no token yet, or the current one is expired → refresh
-    if graph_token is None or time.time() >= graph_token_expires_at:
-        graph_token, graph_token_expires_at = get_graph_token()
-        print("[Token] Refreshed Graph access token.")
-
-    return graph_token
-
-def update_sso_attributes_for_sp(sp_id: str, name_id: str, token: str):
-    # UTC now, rounded to nearest minute (±1 minute)
-    now = datetime.datetime.utcnow()
-    if now.second >= 30:
-        now = now + datetime.timedelta(minutes=1)
-    utc_now = now.replace(second=0, microsecond=0).isoformat()  # e.g. 2025-11-27T22:41
-
-    url = f"https://graph.microsoft.com/v1.0/servicePrincipals/{sp_id}"
-
-    body = {
-        "customSecurityAttributes": {
-            "SSO": {
-                "@odata.type": "#Microsoft.DirectoryServices.CustomSecurityAttributeValue",
-                "UniqueUserIdentifier": name_id,
-                "UniqueUserIdentifierLastUpdated": utc_now,
-            }
-        }
-    }
-
-    headers = {
-        "Authorization": f"Bearer {token}",
-        "Content-Type": "application/json",
-    }
-
-    token = ensure_graph_token()
-
-    resp = requests.patch(
-        url,
-        headers={"Authorization": f"Bearer {token}", "Content-Type": "application/json"},
-        json=body
-    )
-    if resp.status_code not in (200, 204):
-        print(f"Failed to update CSA for {sp_id}: {resp.status_code} {resp.text}")
-    else:
-        print(
-            f"Updated SSO attributes for {sp_id} "
-            f"-> UniqueUserIdentifier='{name_id}', LastUpdated='{utc_now}'"
-        )
-
-def parse_iso(dt_str):
-    """Best-effort ISO parser; returns aware UTC datetime."""
-    if not dt_str:
-        return None
-    # handle possible trailing Z
-    if dt_str.endswith("Z"):
-        dt_str = dt_str[:-1] + "+00:00"
-    try:
-        dt = datetime.datetime.fromisoformat(dt_str)
-    except ValueError:
-        return None
-    if dt.tzinfo is None:
-        dt = dt.replace(tzinfo=datetime.timezone.utc)
-    return dt.astimezone(datetime.timezone.utc)
-
-def get_sso_attributes_for_sp(sp_id: str, token: str):
+def get_target_service_principals():
     """
+    Returns a list of service principals tagged 'IAM'
+    where SSO.UniqueUserIdentifier is missing or 'Unknown'.
+    """
+    targets = []
+    url = (
+        "https://graph.microsoft.com/v1.0/servicePrincipals"
+        "?$filter=tags/any(t:t eq 'IAM')"
+        "&$select=id,appId,displayName,customSecurityAttributes,tags"
+    )
+
+    print("[Graph] Discovering IAM-tagged service principals needing CSA update...")
+
+    batch_index = 0
+    while url:
+        resp = graph_get(url)
+        resp.raise_for_status()
+        data = resp.json()
+        batch_index += 1
+
+        for sp in data.get("value", []):
+            sp_id = sp.get("id")
+            app_id = sp.get("appId")
+            name = sp.get("displayName")
+
+            csa = (sp.get("customSecurityAttributes") or {}).get("SSO") or {}
+            uui = csa.get("UniqueUserIdentifier")
+
+            if not uui or str(uui).strip().lower() in ["unknown", "unkown"]:
+                targets.append(
+                    {
+                        "id": sp_id,
+                        "appId": app_id,
+                        "displayName": name,
+                        "existing_uui": uui,
+                    }
+                )
+
+        url = data.get("@odata.nextLink")
+
+    print(f"[Graph] Found {len(targets)} service principals needing CSA review.")
+    return targets
+
+
+def get_page_text_for_sp(driver, sp_id: str, app_id: str) -> str:
+    """Open SAML SSO blade and return concatenated visible text from its iframes."""
+    open_saml_sso_blade(driver, sp_id, app_id)
+
+    # Give the blade a moment to render
+    time.sleep(5)
+
+    page_text_parts = []
+    iframes = driver.find_elements(By.TAG_NAME, "iframe")
+    print(f"  Found {len(iframes)} iframes on SSO blade.")
+
+    for i, frame in enumerate(iframes):
+        try:
+            driver.switch_to.frame(frame)
+            try:
+                body = driver.find_element(By.TAG_NAME, "body")
+                txt = body.text or ""
+                if txt.strip():
+                    page_text_parts.append(txt)
+            except NoSuchElementException:
+                pass
+        finally:
+            driver.switch_to.default_content()
+
+    return "\n".join(page_text_parts)
+
+
+def extract_name_id(page_text: str) -> str:
+    """
+    From the page text, find the line 'Unique User Identifier'
+    and return the next non-empty line as name_id.
+    """
+    name_id = None
+    lines = page_text.splitlines()
+
+    for i, line in enumerate(lines):
+        if line.strip() == "Unique User Identifier":
+            for j in range(i + 1, len(lines)):
+                next_line = lines[j].strip()
+                if next_line:
+                    name_id = next_line
+                    break
+            break
+
+    return name_id or ""
+
+
+def get_sso_attributes_for_sp(sp_id: str):
+    """
+    Read existing SSO custom security attributes from the service principal:
     Returns (existing_name_id, existing_last_updated_str)
-    for the SSO custom security attributes on a service principal.
     """
     url = f"https://graph.microsoft.com/v1.0/servicePrincipals/{sp_id}?$select=customSecurityAttributes"
-    headers = {"Authorization": f"Bearer {token}"}
-
-    token = ensure_graph_token()
-
-    resp = requests.get(
-        url,
-        headers={"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
-    )
+    resp = graph_get(url)
     if resp.status_code != 200:
-        print(f"Failed to read CSA for {sp_id}: {resp.status_code} {resp.text}")
+        print(f"  !! Failed to read CSA for {sp_id}: {resp.status_code} {resp.text}")
         return None, None
 
     data = resp.json()
     csa = (data.get("customSecurityAttributes") or {}).get("SSO") or {}
-
     existing_name_id = csa.get("UniqueUserIdentifier")
     existing_last_updated_str = csa.get("UniqueUserIdentifierLastUpdated")
-
     return existing_name_id, existing_last_updated_str
 
-def get_app_last_updated_from_audit(sp_id: str, token: str):
+
+def get_app_last_updated_from_audit(sp_id: str):
     """
-    Returns the last time the application/service principal was updated,
-    based on directory audit logs (UTC datetime or None).
+    Returns the last time the service principal was updated based on
+    directory audit logs (UTC datetime or None).
     """
     url = (
         "https://graph.microsoft.com/v1.0/auditLogs/directoryAudits"
         f"?$filter=targetResources/any(tr: tr/id eq '{sp_id}')"
         "&$orderby=activityDateTime desc&$top=1"
     )
-    headers = {"Authorization": f"Bearer {token}"}
-
-    token = ensure_graph_token()
-
-    resp = requests.patch(
-        url,
-        headers={"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
-    )
+    resp = graph_get(url)
     if resp.status_code != 200:
-        print(f"Failed to read audit logs for {sp_id}: {resp.status_code} {resp.text}")
+        print(f"  !! Failed to read audit logs for {sp_id}: {resp.status_code} {resp.text}")
         return None
 
     value = resp.json().get("value", [])
@@ -169,205 +168,117 @@ def get_app_last_updated_from_audit(sp_id: str, token: str):
 
     last = value[0]
     activity_dt_str = last.get("activityDateTime")
-    return parse_iso(activity_dt_str)
+    return parse_iso_utc(activity_dt_str)
 
-graph_token = None
-graph_token_expires_at = 0
-graph_token = get_graph_token()
 
-driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
-driver.get("https://portal.azure.com")
+def update_sso_attributes_for_sp(sp_id: str, name_id: str):
+    """
+    Update the SSO custom security attributes on the service principal:
+      - SSO.UniqueUserIdentifier = name_id
+      - SSO.UniqueUserIdentifierLastUpdated = utc_now_rounded_minute() (no seconds, no Z)
+    """
+    rounded = utc_now_rounded_minute().isoformat()  # e.g. 2025-11-27T22:41
 
-wait = WebDriverWait(driver, 20)
+    url = f"https://graph.microsoft.com/v1.0/servicePrincipals/{sp_id}"
+    body = {
+        "customSecurityAttributes": {
+            "SSO": {
+                "@odata.type": "#Microsoft.DirectoryServices.CustomSecurityAttributeValue",
+                "UniqueUserIdentifier": name_id,
+                "UniqueUserIdentifierLastUpdated": rounded,
+            }
+        }
+    }
 
-# Username
-username = os.getenv("AZURE_USERNAME")
-
-wait.until(EC.visibility_of_element_located((By.ID, "i0116"))).send_keys(
-    username
-)
-driver.find_element(By.ID, "idSIButton9").click()
-
-# Password
-password = os.getenv("AZURE_PASSWORD")
-wait.until(EC.visibility_of_element_located((By.ID, "i0118"))).send_keys(password)
-driver.find_element(By.ID, "idSIButton9").click()
-
-time.sleep(2)
-# TOTP code (MFA "Enter code" screen)
-try:
-    totp_secret = os.getenv("AZURE_TOTP_SECRET")
-    totp = pyotp.TOTP(totp_secret, interval=60).now()
-
-    code_box = wait.until(
-        EC.visibility_of_element_located((By.ID, "idTxtBx_SAOTCC_OTC"))
-    )
-    code_box.send_keys(totp)
-
-    driver.find_element(By.ID, "idSubmit_SAOTCC_Continue").click()
-except Exception as e:
-    print("No TOTP screen or failed to enter code:", e)
-
-# Stay signed in? -> Yes
-try:
-    stay_signed_in_btn = wait.until(
-        EC.element_to_be_clickable((By.ID, "idSIButton9"))
-    )
-    stay_signed_in_btn.click()
-except Exception:
-    pass
-# ---- After login + "Stay signed in?" handling ----
-
-csv_path = "service_principals_missing_unique_user_identifier.csv"
-
-# Read all rows once so we know how many there are
-with open(csv_path, newline="") as f:
-    rows = list(csv.DictReader(f))
-
-    total = len(rows)
-    print(f"Found {total} service principals to process.")
-
-    for index, row in enumerate(rows, start=1):
-        obj_id = row["id"]
-        app_id = row["appId"]
-
-        # Simple progress counter + optional % bar
-        percent = index / total * 100
-        bar_len = 30
-        filled = int(bar_len * index / total)
-        bar = "#" * filled + "-" * (bar_len - filled)
-
-        print(f"\n[{bar}] {percent:5.1f}%  ({index}/{total})  id={obj_id}")
-        name_id = "Unkown"
-        found_oidc = False
-
-        url = (
-            "https://portal.azure.com/"
-            "#view/Microsoft_AAD_IAM/ManagedAppMenuBlade/~/SignOn"
-            f"/objectId/{obj_id}"
-            f"/appId/{app_id}"
-            "/preferredSingleSignOnMode/saml"
-            "/servicePrincipalType/Application/fromNav/"
+    resp = graph_patch(url, json=body)
+    if resp.status_code not in (200, 204):
+        print(f"  !! Failed to update CSA for {sp_id}: {resp.status_code} {resp.text}")
+    else:
+        print(
+            f"  -> Updated SSO CSA for {sp_id}: "
+            f"UniqueUserIdentifier='{name_id}', LastUpdated='{rounded}'"
         )
-        time.sleep(2)
-        print(f"Opening: {url}")
-        driver.get(url)
-        # wait a bit for the blade to load
-        time.sleep(7)
-        # Print all visible text on the page
-        
-        page_text = driver.find_element(By.TAG_NAME, "body").text
-        print("\n----- PAGE TEXT START -----\n")
-        print(page_text)
-        print("\n----- PAGE TEXT END -----\n")
-        if "SAML" in page_text:
-            lines = page_text.splitlines()
-
-            for i, line in enumerate(lines):
-                if line.strip() == "Unique User Identifier":
-                    # look for the next non-empty line
-                    for j in range(i+1, len(lines)):
-                        next_line = lines[j].strip()
-                        if next_line:
-                            name_id = next_line
-                            break
-                    break
-
-            print("Extracted Unique User Identifier →", name_id)
-        elif "Single sign-on is not configured for " in page_text:
-            name_id = "SSO not configured"
-        elif "You do not have access" in page_text:
-            name_id = "Access issue"
-        elif "You don't have access" in page_text:
-            name_id = "Access issue"
 
 
-        iframes = driver.find_elements(By.TAG_NAME, "iframe")
-        print(f"Found {len(iframes)} iframes")
+# -----------------------------
+# Main
+# -----------------------------
 
-        for i, frame in enumerate(iframes):
-            driver.switch_to.frame(frame)
-            try:
-                body_text = driver.find_element(By.TAG_NAME, "body").text
-                print(f"\n----- IFRAME {i} TEXT (first 500 chars) -----\n")
-                print(body_text[:500])
-                if "This is a multi-tenant application" in body_text:
-                    name_id = "multi-tenant application"
-                elif "This application uses OpenID Connect and OAuth" in body_text:
-                    found_oidc = True
-                    print("Detected OpenID Connect/OAuth app on this blade.")
-                    # leave iframe loop; we’ll navigate to token config
-                    driver.switch_to.default_content()
-                    break
-#            except NoSuchElementException:
-#                pass
-            finally:
-                driver.switch_to.default_content()
+def main():
+    # Step 1: find targets via Graph (no CSV)
+    targets = get_target_service_principals()
+    total = len(targets)
+    if total == 0:
+        print("No service principals need CSA updates. Exiting.")
+        return
 
-        if found_oidc:
-            token_url = (
-                "https://portal.azure.com/"
-                "#view/Microsoft_AAD_RegisteredApps/ApplicationMenuBlade/~/TokenConfiguration"
-                f"/appId/{app_id}"
-            )
-            print(f"Navigating to Token Configuration: {token_url}")
-            driver.get(token_url)
+    # Step 2: Selenium setup & login
+    driver, wait = create_driver()
+    login_to_azure_portal(driver, wait)
 
-            time.sleep(2)
-            # Print all visible text on the page
-            
-            page_text = driver.find_element(By.TAG_NAME, "body").text
-            print("\n----- PAGE TEXT START -----\n")
-            print(page_text)
-            print("\n----- PAGE TEXT END -----\n")
-            if "No results." in page_text:
-                name_id = "user.userprincipalname"
-            elif "email" in page_text:
-                name_id = "user.mail"
-            else:
-                print("No results not found")
-                name_id = "user.userprincipalname"
-        print("Extracted Unique User Identifier →", name_id)
+    for index, sp in enumerate(targets, start=1):
+        obj_id = sp["id"]
+        app_id = sp["appId"]
+        name = sp["displayName"]
+
+        progress = build_progress_bar(index, total)
+        print(f"\n{progress}  {name}  (id={obj_id}, appId={app_id})")
+
+        # Get page text from SAML SSO blade
+        page_text = get_page_text_for_sp(driver, obj_id, app_id)
+        if not page_text.strip():
+            print("  !! No page text found on SSO blade (maybe layout changed or no iframe text).")
+            input("  Press Enter to go to the next service principal...")
+            continue
+
+        # Extract Unique User Identifier
+        name_id = extract_name_id(page_text)
+        print(f"  Extracted Unique User Identifier → '{name_id}'")
+
         # Only act when name_id is set and not "Unknown"/"Unkown"
         if name_id and name_id.strip().lower() not in ["unknown", "unkown"]:
-            existing_name_id, existing_last_updated_str = get_sso_attributes_for_sp(obj_id, graph_token)
-            print(f"Existing CSA UniqueUserIdentifier={existing_name_id}, "
-                f"UniqueUserIdentifierLastUpdated={existing_last_updated_str}")
+            existing_name_id, existing_last_updated_str = get_sso_attributes_for_sp(obj_id)
+            print(
+                f"  Existing CSA UniqueUserIdentifier={existing_name_id}, "
+                f"UniqueUserIdentifierLastUpdated={existing_last_updated_str}"
+            )
 
-            existing_last_updated_dt = parse_iso(existing_last_updated_str) if existing_last_updated_str else None
+            existing_last_updated_dt = (
+                parse_iso_utc(existing_last_updated_str) if existing_last_updated_str else None
+            )
 
             # 1) If CSA is null or different → update immediately
             if not existing_name_id or existing_name_id != name_id:
-                print("CSA UniqueUserIdentifier is null or different → updating CSA.")
-                update_sso_attributes_for_sp(obj_id, name_id, graph_token)
-                # auto-continue to next SP
+                print("  CSA UniqueUserIdentifier is null or different → updating CSA.")
+                update_sso_attributes_for_sp(obj_id, name_id)
+                print(f"  Processed {obj_id} automatically (name_id='{name_id}').")
                 continue
 
             # 2) CSA matches name_id → check audit logs
-            print("CSA UniqueUserIdentifier already matches name_id; checking audit logs...")
-            app_last_updated_dt = get_app_last_updated_from_audit(obj_id, graph_token)
+            print("  CSA UniqueUserIdentifier already matches name_id; checking audit logs...")
+            app_last_updated_dt = get_app_last_updated_from_audit(obj_id)
 
-            print(f"App last updated (audit): {app_last_updated_dt}")
-            print(f"CSA UniqueUserIdentifierLastUpdated parsed: {existing_last_updated_dt}")
+            print(f"  App last updated (audit): {app_last_updated_dt}")
+            print(f"  CSA UniqueUserIdentifierLastUpdated parsed: {existing_last_updated_dt}")
 
             # If the app has been updated more recently than the CSA timestamp → update CSA
             if app_last_updated_dt and existing_last_updated_dt and app_last_updated_dt > existing_last_updated_dt:
-                print("App was updated after CSA LastUpdated → updating CSA.")
-                update_sso_attributes_for_sp(obj_id, name_id, graph_token)
+                print("  App was updated after CSA LastUpdated → updating CSA.")
+                update_sso_attributes_for_sp(obj_id, name_id)
+                print(f"  Processed {obj_id} automatically (name_id='{name_id}').")
                 continue
             else:
-                print("CSA is up to date relative to app updates; no CSA update needed.")
-                # fall through to loop end (no pause here)
+                print("  CSA appears up to date relative to app updates; no CSA update needed.")
+                print(f"  Processed {obj_id} automatically (name_id='{name_id}').")
+                continue
         else:
-            print("name_id is missing or Unknown; not attempting CSA update.")
+            print("  name_id is missing or 'Unknown'; not attempting CSA update.")
+            input("  Press Enter to go to the next service principal...")
 
-        # Only pause if name_id is missing/Unknown (your previous rule)
-        if not name_id or name_id.strip().lower() in ["unknown", "unkown"]:
-            input("Press Enter to go to the next service principal...")
-        else:
-            print(f"Processed {obj_id} automatically (name_id='{name_id}').")
-            # continue implicitly via loop
+    print("\nDone. All IAM-tagged service principals needing CSA updates have been processed.")
+    input("Press Enter to close the browser...")
+    driver.quit()
 
-# When done
-input("All rows done. Press Enter to close the browser...")
-driver.quit()
+
+if __name__ == "__main__":
+    main()

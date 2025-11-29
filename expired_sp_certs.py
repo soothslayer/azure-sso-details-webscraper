@@ -1,147 +1,15 @@
-import os
-import time
 import datetime
-import requests
 
-# Selenium imports
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from webdriver_manager.chrome import ChromeDriverManager
-import pyotp
-
-
-# =========================
-#  Auth helpers (Graph)
-# =========================
-
-def get_graph_token():
-    tenant_id = os.environ["AZURE_TENANT_ID"]
-    client_id = os.environ["AZURE_CLIENT_ID"]
-    client_secret = os.environ["AZURE_CLIENT_SECRET"]
-
-    token_url = f"https://login.microsoftonline.com/{tenant_id}/oauth2/v2.0/token"
-    data = {
-        "client_id": client_id,
-        "client_secret": client_secret,
-        "scope": "https://graph.microsoft.com/.default",
-        "grant_type": "client_credentials",
-    }
-
-    resp = requests.post(token_url, data=data)
-    resp.raise_for_status()
-    j = resp.json()
-
-    access_token = j["access_token"]
-    expires_in = j.get("expires_in", 3600)
-    expires_at = time.time() + expires_in - 60  # refresh 1 min early
-
-    return access_token, expires_at
-
-
-graph_token = None
-graph_token_expires_at = 0
-
-
-def ensure_graph_token():
-    global graph_token, graph_token_expires_at
-    if graph_token is None or time.time() >= graph_token_expires_at:
-        graph_token, graph_token_expires_at = get_graph_token()
-        print("[Token] Refreshed Graph access token.")
-    return graph_token
-
-
-# =========================
-#  Date helper
-# =========================
-
-def parse_iso_utc(dt_str):
-    if not dt_str:
-        return None
-    if dt_str.endswith("Z"):
-        dt_str = dt_str[:-1] + "+00:00"
-    try:
-        dt = datetime.datetime.fromisoformat(dt_str)
-    except ValueError:
-        return None
-    if dt.tzinfo is None:
-        dt = dt.replace(tzinfo=datetime.timezone.utc)
-    return dt.astimezone(datetime.timezone.utc)
-
-
-# =========================
-#  Selenium login helpers
-# =========================
-
-def login_to_azure_portal(driver, wait):
-    # Update username if needed
-    username = os.getenv("AZURE_USERNAME")
-    password = os.getenv("AZURE_PASSWORD")
-    totp_secret = os.getenv("AZURE_TOTP_SECRET")
-
-    driver.get("https://portal.azure.com")
-
-    # Username
-    wait.until(EC.visibility_of_element_located((By.ID, "i0116"))).send_keys(username)
-    driver.find_element(By.ID, "idSIButton9").click()
-
-    # Password
-    wait.until(EC.visibility_of_element_located((By.ID, "i0118"))).send_keys(password)
-    driver.find_element(By.ID, "idSIButton9").click()
-
-    # TOTP MFA (if prompted)
-    if totp_secret:
-        try:
-            totp = pyotp.TOTP(totp_secret, interval=60).now()
-            code_box = WebDriverWait(driver, 20).until(
-                EC.visibility_of_element_located((By.ID, "idTxtBx_SAOTCC_OTC"))
-            )
-            code_box.send_keys(totp)
-            driver.find_element(By.ID, "idSubmit_SAOTCC_Continue").click()
-        except Exception as e:
-            print(f"[MFA] No TOTP prompt or failed to enter code: {e}")
-
-    # Stay signed in? Yes
-    try:
-        stay_btn = WebDriverWait(driver, 20).until(
-            EC.element_to_be_clickable((By.ID, "idSIButton9"))
-        )
-        stay_btn.click()
-    except Exception:
-        pass
-
-    print("[Selenium] Logged into Azure Portal.")
-
-
-def open_saml_sso_blade(driver, sp_id, app_id):
-    url = (
-        "https://portal.azure.com/"
-        "#view/Microsoft_AAD_IAM/ManagedAppMenuBlade/~/SignOn"
-        f"/objectId/{sp_id}"
-        f"/appId/{app_id}"
-        "/preferredSingleSignOnMode/saml"
-        "/servicePrincipalType/Application/fromNav/"
-    )
-    print(f"[Selenium] Opening SAML SSO blade: {url}")
-    driver.get(url)
-
-
-# =========================
-#  Main logic
-# =========================
+from common.graph_utils import graph_get
+from common.time_utils import parse_iso_utc
+from common.selenium_utils import create_driver, login_to_azure_portal, open_saml_sso_blade
 
 def main():
     now_utc = datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc)
 
-    # Selenium setup
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
-    wait = WebDriverWait(driver, 20)
-
+    driver, wait = create_driver()
     login_to_azure_portal(driver, wait)
 
-    # Filter to IAM-tagged service principals
     url = (
         "https://graph.microsoft.com/v1.0/servicePrincipals"
         "?$filter=tags/any(t:t eq 'IAM')"
@@ -150,15 +18,11 @@ def main():
 
     sp_index = 0
     while url:
-        token = ensure_graph_token()
-        headers = {"Authorization": f"Bearer {token}"}
-
-        resp = requests.get(url, headers=headers)
+        resp = graph_get(url)
         resp.raise_for_status()
         data = resp.json()
 
-        sps = data.get("value", [])
-        for sp in sps:
+        for sp in data.get("value", []):
             sp_index += 1
             sp_id = sp.get("id")
             app_id = sp.get("appId")
