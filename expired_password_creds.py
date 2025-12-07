@@ -1,71 +1,36 @@
-import os
-import time
+#!/usr/bin/env python3
+"""
+expired_password_creds.py
+
+Finds IAM-tagged applications with passwordCredentials that expired more than
+30 days ago. For each expired secret, prompts for confirmation and, if 'y',
+appends a note to the application's notes field.
+
+A delete_password_credential() helper is provided, but the call is commented
+out so no secrets are deleted until you're ready to go live.
+"""
+
 import datetime
-import requests
+from typing import Optional
 
+from dotenv import load_dotenv
+load_dotenv()
 
-# ---------- Auth helpers ----------
+from common.graph_utils import graph_get, graph_patch, graph_post
+from common.time_utils import parse_iso_utc
 
-def get_graph_token():
-    tenant_id = os.environ["AZURE_TENANT_ID"]
-    client_id = os.environ["AZURE_CLIENT_ID"]
-    client_secret = os.environ["AZURE_CLIENT_SECRET"]
+load_dotenv(override=True)
 
-    token_url = f"https://login.microsoftonline.com/{tenant_id}/oauth2/v2.0/token"
-    data = {
-        "client_id": client_id,
-        "client_secret": client_secret,
-        "scope": "https://graph.microsoft.com/.default",
-        "grant_type": "client_credentials",
-    }
+# -----------------------------
+# Helpers
+# -----------------------------
 
-    resp = requests.post(token_url, data=data)
-    resp.raise_for_status()
-    j = resp.json()
-
-    access_token = j["access_token"]
-    expires_in = j.get("expires_in", 3600)
-    expires_at = time.time() + expires_in - 60  # refresh 1 min early
-
-    return access_token, expires_at
-
-
-graph_token = None
-graph_token_expires_at = 0
-
-
-def ensure_graph_token():
-    global graph_token, graph_token_expires_at
-    if graph_token is None or time.time() >= graph_token_expires_at:
-        graph_token, graph_token_expires_at = get_graph_token()
-        print("[Token] Refreshed Graph access token.")
-    return graph_token
-
-
-# ---------- Date helper ----------
-
-def parse_iso_utc(dt_str):
-    if not dt_str:
-        return None
-    if dt_str.endswith("Z"):
-        dt_str = dt_str[:-1] + "+00:00"
-    try:
-        dt = datetime.datetime.fromisoformat(dt_str)
-    except ValueError:
-        return None
-    if dt.tzinfo is None:
-        dt = dt.replace(tzinfo=datetime.timezone.utc)
-    return dt.astimezone(datetime.timezone.utc)
-
-
-# ---------- Notes helper ----------
-
-def append_app_notes(app_obj_id, current_notes, extra_line):
+def append_app_notes(app_obj_id: str, current_notes: Optional[str], extra_line: str) -> str:
     """
     Append extra_line to the application's notes field.
     Uses current_notes as the base (may be empty string).
+    Returns the new notes string (or old on failure).
     """
-    token = ensure_graph_token()
     url = f"https://graph.microsoft.com/v1.0/applications/{app_obj_id}"
 
     if current_notes:
@@ -73,46 +38,45 @@ def append_app_notes(app_obj_id, current_notes, extra_line):
     else:
         new_notes = extra_line
 
-    headers = {
-        "Authorization": f"Bearer {token}",
-        "Content-Type": "application/json",
-    }
     body = {"notes": new_notes}
+    resp = graph_patch(url, json=body)
 
-    resp = requests.patch(url, headers=headers, json=body)
     if resp.status_code not in (200, 204):
         print(f"  !! Failed to update notes: {resp.status_code} {resp.text}")
-        return current_notes  # return old notes on failure
+        return current_notes or ""
+    else:
+        print("  -> Application notes updated.")
+        return new_notes
 
-    print("  -> Application notes updated.")
-    return new_notes  # return updated notes so caller can keep appending in memory
 
-#delete secret helper
-def delete_password_credential(app_obj_id, key_id):
-    """Deletes a passwordCredential from an application (Graph removePassword API)."""
-    token = ensure_graph_token()
+def delete_password_credential(app_obj_id: str, key_id: str) -> None:
+    """
+    Deletes a passwordCredential from an application using
+    the Microsoft Graph removePassword API.
+
+    NOTE: This function is not called by default. The call site is commented out
+    so you can safely test the script without deleting anything.
+    """
     url = f"https://graph.microsoft.com/v1.0/applications/{app_obj_id}/removePassword"
-    headers = {
-        "Authorization": f"Bearer {token}",
-        "Content-Type": "application/json",
-    }
     body = {"keyId": key_id}
 
-    resp = requests.post(url, headers=headers, json=body)
+    resp = graph_post(url, json=body)
     if resp.status_code not in (200, 204):
         print(f"  !! Failed to delete secret: {resp.status_code} {resp.text}")
     else:
         print("  -> Expired secret deleted successfully.")
 
-# ---------- Main logic ----------
+
+# -----------------------------
+# Main
+# -----------------------------
 
 def main():
-    # cutoff: more than 30 days ago
     now_utc = datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc)
     cutoff = now_utc - datetime.timedelta(days=30)
     today_str = now_utc.date().isoformat()  # YYYY-MM-DD for notes
 
-    # Filter: applications with tag "IAM", include notes
+    # Filter: applications with tag "IAM"
     url = (
         "https://graph.microsoft.com/v1.0/applications"
         "?$filter=tags/any(t:t eq 'IAM')"
@@ -121,10 +85,7 @@ def main():
 
     app_index = 0
     while url:
-        token = ensure_graph_token()
-        headers = {"Authorization": f"Bearer {token}"}
-
-        resp = requests.get(url, headers=headers)
+        resp = graph_get(url)
         resp.raise_for_status()
         data = resp.json()
 
@@ -170,7 +131,6 @@ def main():
                         f"{end_dt_raw} was deleted on {today_str}."
                     )
 
-                    # Prompt user
                     answer = input(
                         "  Append this info to application notes? (y/n): "
                     ).strip().lower()
@@ -178,14 +138,14 @@ def main():
                     if answer == "y":
                         print("  Appending to notes:")
                         print(f"    {note_line}")
-                        # Uncomment the line below when ready to go live:
-                        # delete_password_credential(obj_id, cred_key_id)
                         current_notes = append_app_notes(obj_id, current_notes, note_line)
+
+                        # When you're ready to actually delete:
+                        # delete_password_credential(obj_id, cred_key_id)
                     else:
                         print("  Skipping notes update for this credential.")
 
-                    # IMPORTANT: we do NOT delete the secret.
-                    # Then proceed to the next expired passwordCredential (no break)
+                    # proceed to next expired passwordCredential (no break)
 
             if not expired_found:
                 print("  -> No password credentials expired > 30 days ago.")

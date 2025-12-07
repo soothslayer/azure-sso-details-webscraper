@@ -3,6 +3,8 @@ import datetime
 from common.graph_utils import graph_get
 from common.time_utils import parse_iso_utc
 from common.selenium_utils import create_driver, login_to_azure_portal, open_saml_sso_blade
+from dotenv import load_dotenv
+load_dotenv(override=True)
 
 def main():
     now_utc = datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc)

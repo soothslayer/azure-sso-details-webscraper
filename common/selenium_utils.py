@@ -8,7 +8,8 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
-
+from dotenv import load_dotenv
+load_dotenv()
 
 def create_driver():
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
@@ -20,7 +21,8 @@ def login_to_azure_portal(driver, wait):
     username = os.getenv("AZURE_USERNAME")
     password = os.getenv("AZURE_PASSWORD")
     totp_secret = os.getenv("AZURE_TOTP_SECRET")
-
+    totp_time = os.getenv("AZURE_TOTP_TIME")
+                          
     if not username:
         raise ValueError("AZURE_USERNAME environment variable is not set.")
     if not password:
@@ -39,10 +41,11 @@ def login_to_azure_portal(driver, wait):
     # TOTP MFA (optional)
     if totp_secret:
         try:
-            totp = pyotp.TOTP(totp_secret, interval=60).now()
+            totp = pyotp.TOTP(totp_secret, interval=totp_time).now()
             code_box = WebDriverWait(driver, 20).until(
                 EC.visibility_of_element_located((By.ID, "idTxtBx_SAOTCC_OTC"))
             )
+            wait.sleep(2)
             code_box.send_keys(totp)
             driver.find_element(By.ID, "idSubmit_SAOTCC_Continue").click()
         except Exception as e:

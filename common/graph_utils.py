@@ -4,6 +4,8 @@ import time
 import datetime
 from typing import Optional, Tuple
 import requests
+from dotenv import load_dotenv
+load_dotenv()
 
 
 _graph_token: Optional[str] = None
@@ -11,9 +13,9 @@ _graph_token_expires_at: float = 0.0
 
 
 def get_graph_token() -> Tuple[str, float]:
-    tenant_id = os.environ["AZ_TENANT_ID"]
-    client_id = os.environ["AZ_CLIENT_ID"]
-    client_secret = os.environ["AZ_CLIENT_SECRET"]
+    tenant_id = os.environ["AZURE_TENANT_ID"]
+    client_id = os.environ["AZURE_CLIENT_ID"]
+    client_secret = os.environ["AZURE_CLIENT_SECRET"]
 
     token_url = f"https://login.microsoftonline.com/{tenant_id}/oauth2/v2.0/token"
     data = {

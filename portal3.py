@@ -15,6 +15,8 @@ End-to-end script:
 
 import datetime
 import time
+from dotenv import load_dotenv
+load_dotenv(override=True)
 
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
